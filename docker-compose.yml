@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: llm-prompt-injection
+    env_file:
+      - .env
+    volumes:
+      # Mount output directory to persist reports
+      - ./output:/app/output
+      # Mount configs for easy modification
+      - ./configs:/app/configs
+      # Mount source for development (comment out for production)
+      - ./src:/app/src
+    working_dir: /app
+    command: >
+      sh -c "
+        echo '🔒 LLM Prompt Injection Testing Platform' &&
+        echo '============================================' &&
+        python src/main.py --list-providers &&
+        echo '' &&
+        echo '💡 Container is ready! Use docker-compose exec app bash to interact.' &&
+        echo '📖 Examples:' &&
+        echo '   docker-compose exec app python src/main.py --test-connection' &&
+        echo '   docker-compose exec app python src/main.py --provider openai --test-type comprehensive' &&
+        echo '   docker-compose exec app python src/main.py --provider openai --attack basic_injection' &&
+        tail -f /dev/null
+      "
+    networks:
+      - llm-testing
+    
+  # Optional: Add a lightweight web server to serve reports
+  report-server:
+    image: nginx:alpine
+    container_name: llm-report-server
+    ports:
+      - "8080:80"
+    volumes:
+      - ./output/reports:/usr/share/nginx/html:ro
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+    networks:
+      - llm-testing
+    profiles:
+      - with-server
+
+networks:
+  llm-testing:
+    driver: bridge
+
+volumes:
+  output_data:
+    driver: local
