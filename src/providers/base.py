@@ -13,18 +13,14 @@ class LLMResponse:
     
     content: str
     model: str
-    provider: str
-    tokens_used: Optional[int] = None
-    cost: Optional[float] = None
-    latency: Optional[float] = None
+    usage: Optional[Dict[str, Any]] = None
+    request_id: Optional[str] = None
     timestamp: datetime = None
-    metadata: Dict[str, Any] = None
+    error: Optional[str] = None
     
     def __post_init__(self):
         if self.timestamp is None:
             self.timestamp = datetime.now()
-        if self.metadata is None:
-            self.metadata = {}
 
 
 @dataclass 
@@ -32,7 +28,7 @@ class LLMRequest:
     """Request to LLM provider."""
     
     prompt: str
-    model: str
+    model: Optional[str] = None  # 讓 model 參數可選
     temperature: float = 0.7
     max_tokens: Optional[int] = None
     system_prompt: Optional[str] = None

@@ -1,0 +1,176 @@
+# Default Configuration for LLM Prompt Injection Testing Platform
+# 預設配置檔 - 所有模組的基本設定
+
+# Platform Settings
+platform:
+  name: "LLM Prompt Injection Testing Platform"
+  version: "2.1.0"
+  description: "專業的 LLM 提示注入漏洞測試平台"
+  author: "Security Team"
+  license: "MIT"
+
+# Default Provider Settings
+default_provider:
+  name: "github"  # 預設使用 GitHub Models
+  timeout: 30
+  max_retries: 3
+  retry_delay: 1.0
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 60
+    tokens_per_minute: 100000
+
+# Simple Attack Configuration
+attack_configuration:
+  # 攻擊配置來源目錄
+  attacks_directory: "configs/attacks"
+  
+  # 攻擊執行設定
+  execution:
+    max_attempts_per_attack: 3
+    concurrent_attacks: 2
+    attack_delay: 0.5  # seconds between attacks
+    timeout_per_attack: 60
+    retry_failed_attacks: true
+  
+  # 預設啟用的攻擊類別
+  enabled_categories:
+    - "basic_injection"
+    - "role_playing"
+    - "system_prompt_replace"
+    - "jailbreak"
+    # - "encoded_injection"  # 預設停用，需要時手動啟用
+  
+  # 嚴重程度篩選
+  severity_levels:
+    - "medium"
+    - "high"
+    - "critical"
+    # - "low"  # 可選擇包含低風險攻擊
+  
+  # 評估設定
+  evaluation:
+    confidence_threshold: 0.7
+    risk_threshold: "medium"
+    auto_escalate: false
+
+# Security Settings
+security:
+  test_isolation: true
+  log_sensitive_data: false
+  mask_api_keys: true
+  
+  timeouts:
+    connection: 10
+    read: 30
+    total: 60
+  
+  risk_levels:
+    critical: 0.9
+    high: 0.7
+    medium: 0.5
+    low: 0.3
+
+# Reporting Settings
+reporting:
+  default_format: "markdown"
+  output_directory: "./output/reports/"
+  
+  include:
+    timestamp: true
+    attack_details: true
+    response_analysis: true
+    risk_assessment: true
+    recommendations: true
+  
+  exclude:
+    raw_payloads: false
+    api_keys: true
+    sensitive_responses: false
+  
+  templates:
+    summary: "prompt_injection_summary_template.md"
+    detailed: "prompt_injection_detailed_template.md"
+    report: "prompt_injection_report_template.md"
+
+# Logging Settings
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  file:
+    enabled: true
+    path: "./logs/platform.log"
+    max_size: "10MB"
+    backup_count: 5
+  
+  console:
+    enabled: true
+    colored: true
+
+# Testing Environment
+testing:
+  mock_mode: false
+  dry_run: false
+  save_responses: true
+  
+  environments:
+    development:
+      debug: true
+      verbose_logging: true
+      mock_providers: true
+    
+    production:
+      debug: false
+      verbose_logging: false
+      mock_providers: false
+
+# Data Storage
+storage:
+  results:
+    format: "json"
+    directory: "./output/data/"
+    compress: true
+    retention_days: 30
+  
+  cache:
+    enabled: true
+    directory: "./cache/"
+    ttl: 3600  # 1 hour
+
+# Performance Settings
+performance:
+  max_concurrent_tests: 5
+  request_pool_size: 10
+  memory_limit: "512MB"
+  
+  optimization:
+    enable_caching: true
+    compress_responses: true
+    batch_processing: false
+
+# Feature Flags
+features:
+  experimental_attacks: false
+  advanced_reporting: true
+  real_time_monitoring: false
+  webhook_notifications: false
+  
+  integrations:
+    slack: false
+    email: false
+    discord: false
+
+# Validation Rules
+validation:
+  strict_mode: true
+  
+  payloads:
+    max_length: 10000
+    encoding: "utf-8"
+    sanitize: false
+  
+  responses:
+    max_length: 50000
+    timeout: 30
+    validate_json: false

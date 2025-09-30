@@ -4,9 +4,9 @@ import pytest
 from unittest.mock import AsyncMock, MagicMock
 from datetime import datetime
 
-from src.attacks.basic_injection import BasicInjectionAttack
-from src.attacks.role_playing import RolePlayingAttack
-from src.attacks.base_attack import AttackResult, AttackCategory, AttackSeverity
+from src.core.basic_injection import BasicInjectionAttack
+from src.core.role_playing import RolePlayingAttack
+from src.core.attacks import AttackResult, AttackCategory, AttackSeverity
 from src.providers.base import LLMResponse
 
 

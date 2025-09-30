@@ -9,12 +9,21 @@ services:
     env_file:
       - .env
     volumes:
-      # Mount output directory to persist reports
-      - ./output:/app/output
       # Mount configs for easy modification
       - ./configs:/app/configs
+      # Mount output directory to persist reports
+      - ./output:/app/output
+      # Mount scripts directory for development
+      - ./scripts:/app/scripts
       # Mount source for development (comment out for production)
       - ./src:/app/src
+      # Mount tests directory for development
+      - ./tests:/app/tests
+      # Mount documentation files for editing
+      - ./README.md:/app/README.md
+      - ./project.yml:/app/project.yml
+      - ./requirements.txt:/app/requirements.txt
+
     working_dir: /app
     command: >
       sh -c "

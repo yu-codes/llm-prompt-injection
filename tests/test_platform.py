@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import os
 
 from src.core.platform import PromptInjectionPlatform
-from src.attacks.base_attack import AttackResult
+from src.core.attacks import AttackResult
 from src.core.evaluator import EvaluationResult
 
 
